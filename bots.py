@@ -3,7 +3,21 @@ import websocket
 import json
 import socket
 from bs4 import BeautifulSoup 
+""" 
+	on_message(websocket, message)
 
+	parameter :
+		websocket : create socket in main to send msg 
+		message : dictionary
+	variance : 
+		ch_msg : change_message's return value 
+		retrun_msg : to send, identify return type 
+	inner function, etc; 
+		json.loads() : loads's parameter change type to json
+		keys() : dictionary's key 
+		send() : to send data though the websocket 
+		dumps() : to encode for json  
+"""
 def on_message(ws, message):
     message = json.loads(message) # 전달받은 message는 무조건 JSON 형태이므로, 이를 사용하기 쉽게 Python Dict 형식으로 변환  -> diction aray 의 
     if 'type' not in message.keys() or message['type'] != 'message': # 입력받은 메세지가 텍스트가 아닐 경우
@@ -16,6 +30,24 @@ def on_message(ws, message):
             'text': ch_msg # 전달할 메세지, echo 봇이니까 들어온 메세지를 그대로 다시 전달 
         }
         ws.send(json.dumps(return_msg)) # 서버에 메세지를 전송 
+
+"""
+	change_message(message)
+	parameter
+		message : type is str, etc
+	variance 
+		msg : message change to string 
+		res : to post webpage of pusan univ 
+		soup : 
+		replace :
+	inner function, etc
+		str : to change str type 
+		post : post msg  in webpage context area
+		status_code : http response code 200 is ok 
+		BeautifulSoup : html parsing lib
+		res.text : find response text part
+		find : to find 'td' para in html include {'class': 'tdReplace'} dictionary 
+"""
 def change_message(message):
     msg = str(message)
     res = requests.post('http://speller.cs.pusan.ac.kr/PnuWebSpeller/lib/check.asp',{'text1':msg})
@@ -25,11 +57,16 @@ def change_message(message):
     soup = BeautifulSoup(res.text)
     replace = soup.find('td',{'class':'tdReplace'})
     return replace.text
-    
+"""
+	main 
+	variance 
+		token : you register slack bot integration and you get token like xoxb-... 
+		get_url :to connect  slack RTM though websocket and api call 
+		ws : websocket object 
+"""
 if __name__ == '__main__':
-    token = '' # Bot Integration으로 등록 후 발급받은 Token, xoxb-아무-토큰 형태임
+    token = ''
     get_url = requests.get('https://slack.com/api/rtm.connect?token=' + token) # Slack RTM에 WebSocket 통신 URL을 가져오는 API 요청 보냄
-
     socket_endpoint = get_url.json()['url'] # get_url.json()은 위의 JSON 객체 형태를 지니니까, 여기서 ULR 부분만 뽑아와서 socket_endpoint에 저장
     websocket.enableTrace(True) # 디버깅을 위해 통신 정보를 모두 콘솔에 프린트 
     ws = websocket.WebSocketApp(socket_endpoint, on_message=on_message) # 가져온 URL, 콜백 함수를 이용하여 WebSocket 객체 생성
