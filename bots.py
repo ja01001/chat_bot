@@ -2,6 +2,7 @@ import requests
 import websocket
 import json
 import socket
+import os 
 from bs4 import BeautifulSoup 
 """ 
 	on_message(websocket, message)
@@ -60,12 +61,12 @@ def change_message(message):
 """
 	main 
 	variance 
-		token : you register slack bot integration and you get token like xoxb-... 
+		token : you register slack bot integration and you get token like xoxb-...  here token heroku's change 
 		get_url :to connect  slack RTM though websocket and api call 
 		ws : websocket object 
 """
 if __name__ == '__main__':
-    token = ''
+    token = os.environ.get('SLACK_BOT_TOKEN') 
     get_url = requests.get('https://slack.com/api/rtm.connect?token=' + token) # Slack RTM에 WebSocket 통신 URL을 가져오는 API 요청 보냄
     socket_endpoint = get_url.json()['url'] # get_url.json()은 위의 JSON 객체 형태를 지니니까, 여기서 ULR 부분만 뽑아와서 socket_endpoint에 저장
     websocket.enableTrace(True) # 디버깅을 위해 통신 정보를 모두 콘솔에 프린트 
