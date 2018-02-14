@@ -3,11 +3,10 @@ url = "https://pypi.python.org/simple"
 verify_ssl = true
 [packages]
 
-websockets = "*"
 websocket-client = "*"
 requests = "*"
-websocket = "*"
-BeautifulSoup4 = "*"
+websockets = "*"
+beautifulsoup4 = "*"
 
 
 [requires]
