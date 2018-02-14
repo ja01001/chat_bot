@@ -1,0 +1,14 @@
+[packages]
+
+websockets = "*"
+websocket-client = "*"
+requests = "*"
+websocket = "*"
+json = "*"
+os  = "*"
+BeautifulSoup4 = "*"
+
+
+[requires]
+
+python_version = "3.6"
