@@ -7,8 +7,6 @@ websockets = "*"
 websocket-client = "*"
 requests = "*"
 websocket = "*"
-json = "*"
-os  = "*"
 BeautifulSoup4 = "*"
 
 
