@@ -65,10 +65,3 @@ def change_message(message):
 		get_url :to connect  slack RTM though websocket and api call 
 		ws : websocket object 
 """
-if __name__ == '__main__':
-    token = os.environ.get('SLACK_BOT_TOKEN') 
-    get_url = requests.get('https://slack.com/api/rtm.connect?token=' + token) # Slack RTM에 WebSocket 통신 URL을 가져오는 API 요청 보냄
-    socket_endpoint = get_url.json()['url'] # get_url.json()은 위의 JSON 객체 형태를 지니니까, 여기서 ULR 부분만 뽑아와서 socket_endpoint에 저장
-    websocket.enableTrace(True) # 디버깅을 위해 통신 정보를 모두 콘솔에 프린트 
-    ws = websocket.WebSocketApp(socket_endpoint, on_message=on_message) # 가져온 URL, 콜백 함수를 이용하여 WebSocket 객체 생성
-    ws.run_forever() # WebSocket 서버와 통신
